@@ -33,11 +33,11 @@ const config = {
 
     "@typescript-eslint/no-confusing-void-expression": "off",
     "@typescript-eslint/restrict-template-expressions": "off",
-
     "@typescript-eslint/prefer-nullish-coalescing": "off",
     "@typescript-eslint/consistent-type-definitions" : "off",
     '@typescript-eslint/no-unsafe-assignment' : "off",
-    "@typescript-eslint/no-unsafe-return" : 'off'
+    "@typescript-eslint/no-unsafe-return" : 'off',
+    "@typescript-eslint/no-unsafe-call" : "off",
   },
 };
 
