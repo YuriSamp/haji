@@ -1,0 +1,16 @@
+node_modules
+.log
+   
+# local env files
+.env.local
+.env
+
+# testing
+/coverage
+
+# production
+dist
+
+# misc
+.DS_Store
+*.pem
