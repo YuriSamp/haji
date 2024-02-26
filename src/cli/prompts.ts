@@ -41,3 +41,26 @@ export const promptWithType = async () => {
   });
   return projectType;
 };
+
+export const promptPackageManager = async () => {
+  const packageManager = await inquirer.select({
+    message: "Which package manager do you want to use?",
+    default: "pnpm",
+    choices: [
+      {
+        name: "pnpm",
+        value: "pnpm",
+      },
+      {
+        name: "yarn",
+        value: "yarn",
+      },
+      {
+        name: "npm",
+        value: "npm",
+      },
+    ],
+  });
+
+  return packageManager;
+};
