@@ -4,6 +4,21 @@
   "description": "",
   "main": "index.js",
   "type": "module",
+  "bin": {
+    "haji": "./dist/index.cjs"
+  },
+  "tsup": {
+    "clean": true,
+    "entry": [
+      "src/index.ts"
+    ],
+    "format": [
+      "cjs"
+    ],
+    "minify": false,
+    "target": "esnext",
+    "outDir": "dist"
+  },
   "scripts": {
     "dev": "tsx --watch src/index.ts",
     "build": "tsup",
