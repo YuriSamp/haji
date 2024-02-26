@@ -62,5 +62,5 @@ export const promptPackageManager = async () => {
     ],
   });
 
-  return packageManager;
+  return packageManager as "pnpm" | "yarn" | "npm";
 };

@@ -13,11 +13,11 @@ import {
 } from "./prompts.js";
 
 export const runCli = async () => {
-  const name = await promptProjectName();
-  const fullPath = getFullPath(name);
+  const projectName = await promptProjectName();
+  const fullPath = getFullPath(projectName);
   const isEmpty = await checkIfFolderIsEmpty(fullPath);
 
-  if (!isProjectNameValid(name)) {
+  if (!isProjectNameValid(projectName)) {
     console.error(
       `❌ ${chalk.red("Invalid project name! It should contains only letters, numbers, dashes and underscores.")}`
     );
@@ -33,5 +33,5 @@ export const runCli = async () => {
   const withTests = await promptWithTest();
   const packageManager = await promptPackageManager();
 
-  return { name, projectType, withTests, packageManager };
+  return { projectName, projectType, withTests, packageManager };
 };
