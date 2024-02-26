@@ -36,6 +36,8 @@ const config = {
 
     "@typescript-eslint/prefer-nullish-coalescing": "off",
     "@typescript-eslint/consistent-type-definitions" : "off",
+    '@typescript-eslint/no-unsafe-assignment' : "off",
+    "@typescript-eslint/no-unsafe-return" : 'off'
   },
 };
 

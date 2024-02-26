@@ -1,4 +1,3 @@
-
 const config = {
   arrowParens: "always",
   printWidth: 80,
@@ -13,6 +12,5 @@ const config = {
   importOrderParserPlugins: ["typescript", "jsx", "decorators-legacy"],
   importOrderTypeScriptVersion: "4.4.0",
 };
-  
+
 export default config;
-  
