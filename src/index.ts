@@ -73,6 +73,8 @@ const main = async () => {
         dev: "tsx --watch src/index.ts",
         build: "tsup",
         start: "node dist/index.js",
+        test: "vitest",
+        "test:coverage": "vitest run --coverage",
       };
 
       await writeFile(

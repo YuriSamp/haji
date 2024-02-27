@@ -3,5 +3,3 @@ export const testDeps = () => {
 
   return { developDeps };
 };
-
-//ADICIONAR O "test:watch": "vitest" E O  "test:coverage": "vitest run --coverage"
