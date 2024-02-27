@@ -5,10 +5,11 @@ import { chdir } from "process";
 import chalk from "chalk";
 
 import { addConfigFiles } from "./addons/index.js";
-import { addTestConfig } from "./addons/test/index.js";
 import { runCli } from "./cli/index.js";
 import { runStep } from "./cli/step.js";
-import { baseDeps } from "./config/baseDeps.js";
+import { baseDeps } from "./deps/baseDeps.js";
+import { cliAppDeps } from "./deps/cli/index.js";
+import { addTestDeps } from "./deps/test/index.js";
 import { getFullPath, packageManagerCommands } from "./helpers/index.js";
 
 const loadJSON = async (path: string): Promise<Record<string, unknown>> =>
@@ -18,6 +19,8 @@ const loadJSON = async (path: string): Promise<Record<string, unknown>> =>
   >;
 
 const main = async () => {
+  const deps = baseDeps;
+
   const initialCwd = process.cwd();
   const { projectName, packageManager, projectType, withTests } =
     await runCli();
@@ -89,9 +92,10 @@ const main = async () => {
   });
 
   if (withTests) {
-    await runStep({
-      description: "Setting up vitest...",
-      exec: async () => addTestConfig(),
+    const { developDeps } = await addTestDeps();
+
+    developDeps.forEach((testDeps) => {
+      deps.push(testDeps);
     });
   }
 

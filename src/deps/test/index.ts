@@ -1,7 +1,7 @@
 import { writeFile } from "fs/promises";
 
-export const addTestConfig = async () => {
-  const deps = ["vitest", "vite-tsconfig-paths"];
+export const addTestDeps = async () => {
+  const developDeps = ["vitest", "vite-tsconfig-paths"];
 
   const testConfig = `
   import tsconfigPaths from 'vite-tsconfig-paths';
@@ -15,7 +15,7 @@ export const addTestConfig = async () => {
 
   await writeFile("vitest.config.ts", testConfig);
 
-  return deps;
+  return { developDeps };
 };
 
 //ADICIONAR O "test:watch": "vitest" E O  "test:coverage": "vitest run --coverage"

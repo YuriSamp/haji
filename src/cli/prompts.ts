@@ -1,5 +1,9 @@
 import * as inquirer from "@inquirer/prompts";
 
+type ProjectType = "cli" | "web server" | "standalone";
+
+type PackageManager = "pnpm" | "yarn" | "npm";
+
 export const promptProjectName = async () => {
   const name = await inquirer.input({
     message: "What is the name of the project?",
@@ -21,7 +25,7 @@ export const promptWithTest = async () => {
 };
 
 export const promptWithType = async () => {
-  const projectType = await inquirer.select({
+  const projectType: ProjectType = await inquirer.select({
     message: "Wich type of project you want?",
     default: "web server",
     choices: [
@@ -43,7 +47,7 @@ export const promptWithType = async () => {
 };
 
 export const promptPackageManager = async () => {
-  const packageManager = await inquirer.select({
+  const packageManager: PackageManager = await inquirer.select({
     message: "Which package manager do you want to use?",
     default: "pnpm",
     choices: [
@@ -62,5 +66,5 @@ export const promptPackageManager = async () => {
     ],
   });
 
-  return packageManager as "pnpm" | "yarn" | "npm";
+  return packageManager;
 };
