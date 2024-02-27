@@ -4,9 +4,9 @@ import path from "path";
 import { chdir } from "process";
 import chalk from "chalk";
 
-import { addConfigFiles } from "./addons/index.js";
 import { runCli } from "./cli/index.js";
 import { runStep } from "./cli/step.js";
+import { addConfigFiles } from "./config/index.js";
 import { handleDepencies } from "./deps/handle-dependecies.js";
 import { getFullPath, packageManagerCommands } from "./helpers/index.js";
 
@@ -19,19 +19,18 @@ const loadJSON = async (path: string): Promise<Record<string, unknown>> =>
 const main = async () => {
   const initialCwd = process.cwd();
   const userChoices = await runCli();
-  const { projectName, packageManager } = userChoices;
 
-  const fullPath = getFullPath(projectName);
+  const fullPath = getFullPath(userChoices.projectName);
   const relativePath = path.relative(process.cwd(), fullPath);
 
   console.log(
-    `Creating project ${chalk.blue(projectName)} at ./${relativePath}`
+    `Creating project ${chalk.blue(userChoices.projectName)} at ./${relativePath}`
   );
 
   await mkdir(fullPath, { recursive: true });
   chdir(fullPath);
 
-  const pkgManagerCommands = packageManagerCommands[packageManager];
+  const pkgManagerCommands = packageManagerCommands[userChoices.packageManager];
 
   await runStep({
     command: "git init",
@@ -41,14 +40,14 @@ const main = async () => {
   try {
     await runStep({
       command: pkgManagerCommands.init,
-      description: `Initializing ${packageManager}...`,
+      description: `Initializing ${userChoices.packageManager}...`,
     });
   } catch (err) {
     if (err instanceof Error && "code" in err) {
       if (err.code === 127) {
         console.error(
           chalk.red(
-            `Package manager ${packageManager} not found. Please install it and try again.`
+            `Package manager ${userChoices.packageManager} not found. Please install it and try again.`
           )
         );
         process.exit(1);
