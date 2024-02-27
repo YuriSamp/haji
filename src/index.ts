@@ -5,6 +5,7 @@ import { chdir } from "process";
 import chalk from "chalk";
 
 import { addConfigFiles } from "./addons/index.js";
+import { addTestConfig } from "./addons/test/index.js";
 import { runCli } from "./cli/index.js";
 import { runStep } from "./cli/step.js";
 import { baseDeps } from "./config/baseDeps.js";
@@ -83,13 +84,20 @@ const main = async () => {
   });
 
   await runStep({
-    command: `${pkgManagerCommands.install} ${baseDeps.join(" ")} -D`,
-    description: "Installing dependencies...",
-  });
-
-  await runStep({
     description: "Setting up linting...",
     exec: async () => addConfigFiles(),
+  });
+
+  if (withTests) {
+    await runStep({
+      description: "Setting up vitest...",
+      exec: async () => addTestConfig(),
+    });
+  }
+
+  await runStep({
+    command: `${pkgManagerCommands.install} ${baseDeps.join(" ")} -D`,
+    description: "Installing dependencies...",
   });
 
   const runCdText = `Run ${chalk.blue(`cd ${relativePath}`)} to start!`;
