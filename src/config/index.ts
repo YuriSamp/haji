@@ -112,7 +112,7 @@ export const addConfigFiles = async (withTest: boolean) => {
   `;
 
   if (withTest) {
-    const testConfig = `
+    const testConfigContent = `
     import tsconfigPaths from 'vite-tsconfig-paths';
     import { defineConfig } from 'vitest/config';
   
@@ -122,7 +122,7 @@ export const addConfigFiles = async (withTest: boolean) => {
     });
     `;
 
-    await writeFile("vitest.config.ts", testConfig);
+    await writeFile("vitest.config.ts", testConfigContent);
   }
 
   await writeFile(".gitignore", gitignoreConfigContent);
