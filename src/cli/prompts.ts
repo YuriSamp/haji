@@ -1,6 +1,6 @@
 import * as inquirer from "@inquirer/prompts";
 
-type ProjectType = "cli" | "web server" | "standalone";
+export type ProjectType = "cli" | "web server" | "standalone";
 
 type PackageManager = "pnpm" | "yarn" | "npm";
 

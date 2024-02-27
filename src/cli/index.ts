@@ -12,6 +12,8 @@ import {
   promptWithType,
 } from "./prompts.js";
 
+export type UserChoices = Awaited<ReturnType<typeof runCli>>;
+
 export const runCli = async () => {
   const projectName = await promptProjectName();
   const fullPath = getFullPath(projectName);

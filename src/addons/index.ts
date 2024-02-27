@@ -1,6 +1,6 @@
 import { writeFile } from "fs/promises";
 
-export const addConfigFiles = async () => {
+export const addConfigFiles = async (withTest: boolean) => {
   const prettierConfigContent = `
   const config = {
     arrowParens: "always",
@@ -110,6 +110,20 @@ export const addConfigFiles = async () => {
     },
   }  
   `;
+
+  if (withTest) {
+    const testConfig = `
+    import tsconfigPaths from 'vite-tsconfig-paths';
+    import { defineConfig } from 'vitest/config';
+  
+    export default defineConfig({
+      test: {},
+      plugins: [tsconfigPaths()] 
+    });
+    `;
+
+    await writeFile("vitest.config.ts", testConfig);
+  }
 
   await writeFile(".gitignore", gitignoreConfigContent);
   await writeFile("prettier.config.mjs", prettierConfigContent);
