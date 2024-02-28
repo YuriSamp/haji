@@ -11,5 +11,5 @@ export const baseDeps = [
   "eslint-plugin-import",
   "eslint-plugin-isaacscript",
   "eslint-plugin-prettier",
-  "prettier"
+  "prettier",
 ];

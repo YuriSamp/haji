@@ -8,8 +8,8 @@ import { runCli } from "./cli/index.js";
 import { runStep } from "./cli/step.js";
 import { addConfigFiles } from "./config/index.js";
 import { handleDepencies } from "./deps/handle-dependecies.js";
+import { overridePackageJson } from "./helpers/handle-package-json.js";
 import { getFullPath, packageManagerCommands } from "./helpers/index.js";
-import { overridePackageJson } from './helpers/handle-package-json.js';
 
 const main = async () => {
   const initialCwd = process.cwd();
@@ -59,7 +59,7 @@ const main = async () => {
 
   await runStep({
     description: "Creating package.json",
-    exec: async () => overridePackageJson(path, fullPath)
+    exec: async () => overridePackageJson(path, fullPath),
   });
 
   await runStep({
