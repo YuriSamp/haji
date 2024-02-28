@@ -59,7 +59,7 @@ export const isProjectNameValid = (name: string) => {
 export const packageManagerCommands = {
   pnpm: {
     init: "pnpm init",
-    install: "pnpm install",
+    install: "pnpm add",
     run: "pnpm",
   },
   yarn: {

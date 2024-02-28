@@ -19,9 +19,10 @@ const loadJSON = async (path: string): Promise<Record<string, unknown>> =>
 const main = async () => {
   const initialCwd = process.cwd();
   const userChoices = await runCli();
-
   const fullPath = getFullPath(userChoices.projectName);
   const relativePath = path.relative(process.cwd(), fullPath);
+  const { devDeps, prodDeps } = handleDepencies(userChoices);
+  const pkgManagerCommands = packageManagerCommands[userChoices.packageManager];
 
   console.log(
     `Creating project ${chalk.blue(userChoices.projectName)} at ./${relativePath}`
@@ -29,8 +30,6 @@ const main = async () => {
 
   await mkdir(fullPath, { recursive: true });
   chdir(fullPath);
-
-  const pkgManagerCommands = packageManagerCommands[userChoices.packageManager];
 
   await runStep({
     command: "git init",
@@ -87,8 +86,6 @@ const main = async () => {
     description: "Setting up linting...",
     exec: async () => addConfigFiles(userChoices.withTests),
   });
-
-  const { devDeps, prodDeps } = handleDepencies(userChoices);
 
   await runStep({
     command: `${pkgManagerCommands.install} ${devDeps.join(" ")} -D && ${pkgManagerCommands.install} ${prodDeps.join(" ")} `,
