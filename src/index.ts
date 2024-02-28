@@ -26,7 +26,7 @@ const main = async () => {
 
   await mkdir(fullPath, { recursive: true });
   chdir(fullPath);
-  
+
   try {
     await runStep({
       command: pkgManagerCommands.init,
@@ -70,7 +70,7 @@ const main = async () => {
 
   await runStep({
     description: "Initializing git repository...",
-    exec: () => gitInit(fullPath),
+    exec: () => gitInit(),
   });
 
   const runCdText = `Run ${chalk.blue(`cd ${relativePath}`)} to start!`;
