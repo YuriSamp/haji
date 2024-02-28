@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import { mkdir, readFile, writeFile } from "fs/promises";
+import { mkdir, writeFile } from "fs/promises";
 import path from "path";
 import { chdir } from "process";
 import chalk from "chalk";
@@ -9,12 +9,7 @@ import { runStep } from "./cli/step.js";
 import { addConfigFiles } from "./config/index.js";
 import { handleDepencies } from "./deps/handle-dependecies.js";
 import { getFullPath, packageManagerCommands } from "./helpers/index.js";
-
-const loadJSON = async (path: string): Promise<Record<string, unknown>> =>
-  JSON.parse(await readFile(path, { encoding: "utf-8" })) as Record<
-    string,
-    unknown
-  >;
+import { overridePackageJson } from './helpers/handle-package-json.js';
 
 const main = async () => {
   const initialCwd = process.cwd();
@@ -64,22 +59,7 @@ const main = async () => {
 
   await runStep({
     description: "Creating package.json",
-    exec: async () => {
-      const packageJson = await loadJSON(path.join(fullPath, "package.json"));
-
-      packageJson.scripts = {
-        dev: "tsx --watch src/index.ts",
-        build: "tsup",
-        start: "node dist/index.js",
-        test: "vitest",
-        "test:coverage": "vitest run --coverage",
-      };
-
-      await writeFile(
-        path.join(fullPath, "package.json"),
-        JSON.stringify(packageJson, null, 2)
-      );
-    },
+    exec: async () => overridePackageJson(path, fullPath)
   });
 
   await runStep({
