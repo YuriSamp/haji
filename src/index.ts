@@ -8,6 +8,7 @@ import { runCli } from "./cli/index.js";
 import { runStep } from "./cli/step.js";
 import { addConfigFiles } from "./config/index.js";
 import { handleDepencies } from "./deps/handle-dependecies.js";
+import { gitInit } from "./helpers/git.js";
 import { overridePackageJson } from "./helpers/handle-package-json.js";
 import { getFullPath, packageManagerCommands } from "./helpers/index.js";
 
@@ -25,12 +26,7 @@ const main = async () => {
 
   await mkdir(fullPath, { recursive: true });
   chdir(fullPath);
-
-  await runStep({
-    command: "git init",
-    description: "Initializing git repository...",
-  });
-
+  
   try {
     await runStep({
       command: pkgManagerCommands.init,
@@ -70,6 +66,11 @@ const main = async () => {
   await runStep({
     command: `${pkgManagerCommands.install} ${devDeps.join(" ")} -D && ${pkgManagerCommands.install} ${prodDeps.join(" ")} `,
     description: "Installing dependencies...",
+  });
+
+  await runStep({
+    description: "Initializing git repository...",
+    exec: () => gitInit(fullPath),
   });
 
   const runCdText = `Run ${chalk.blue(`cd ${relativePath}`)} to start!`;
