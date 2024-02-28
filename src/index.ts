@@ -9,7 +9,10 @@ import { runStep } from "./cli/step.js";
 import { addConfigFiles } from "./config/index.js";
 import { handleDepencies } from "./deps/handle-dependecies.js";
 import { gitInit } from "./helpers/git.js";
-import { overridePackageJson } from "./helpers/handle-package-json.js";
+import {
+  initPackageJson,
+  overridePackageJson,
+} from "./helpers/handle-package-json.js";
 import { getFullPath, packageManagerCommands } from "./helpers/index.js";
 
 const main = async () => {
@@ -27,23 +30,14 @@ const main = async () => {
   await mkdir(fullPath, { recursive: true });
   chdir(fullPath);
 
-  try {
-    await runStep({
-      command: pkgManagerCommands.init,
-      description: `Initializing ${userChoices.packageManager}...`,
-    });
-  } catch (err) {
-    if (err instanceof Error && "code" in err) {
-      if (err.code === 127) {
-        console.error(
-          chalk.red(
-            `Package manager ${userChoices.packageManager} not found. Please install it and try again.`
-          )
-        );
-        process.exit(1);
-      }
-    }
-  }
+  await runStep({
+    description: `Initializing ${userChoices.packageManager}...`,
+    exec: async () =>
+      await initPackageJson(
+        pkgManagerCommands.init,
+        userChoices.packageManager
+      ),
+  });
 
   await runStep({
     description: "Creating src/index.ts...",
@@ -64,7 +58,7 @@ const main = async () => {
   });
 
   await runStep({
-    command: `${pkgManagerCommands.install} ${devDeps.join(" ")} -D && ${pkgManagerCommands.install} ${prodDeps.join(" ")} `,
+    command: `${pkgManagerCommands.install} -D ${devDeps.join(" ")}  && ${pkgManagerCommands.install} ${prodDeps.join(" ")} `,
     description: "Installing dependencies...",
   });
 

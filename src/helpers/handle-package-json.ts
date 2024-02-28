@@ -1,11 +1,34 @@
 import { readFile, writeFile } from "fs/promises";
 import { type PlatformPath } from "path";
+import chalk from "chalk";
+
+import { asyncExec } from "./index.js";
 
 const loadJSON = async (path: string): Promise<Record<string, unknown>> =>
   JSON.parse(await readFile(path, { encoding: "utf-8" })) as Record<
     string,
     unknown
   >;
+
+export const initPackageJson = async (
+  pkgManagerCommand: string,
+  pkgManagerName: string
+) => {
+  try {
+    await asyncExec(pkgManagerCommand);
+  } catch (err) {
+    if (err instanceof Error && "code" in err) {
+      if (err.code === 127) {
+        console.error(
+          chalk.red(
+            `Package manager ${pkgManagerName} not found. Please install it and try again.`
+          )
+        );
+        process.exit(1);
+      }
+    }
+  }
+};
 
 export const overridePackageJson = async (
   path: PlatformPath,
