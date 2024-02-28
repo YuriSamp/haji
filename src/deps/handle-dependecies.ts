@@ -1,9 +1,9 @@
 import { type UserChoices } from "@/cli/index.js";
 
 import { baseDeps } from "./base-deps.js";
-import { cliDeps } from "./cli/index.js";
-import { testDeps } from "./test/index.js";
-import { webServerDeps } from "./web-server/index.js";
+import { cliDeps } from "./cli-deps.js";
+import { testDeps } from "./test-deps.js";
+import { webServerDeps } from "./web-server-deps.js";
 
 export const handleDepencies = (userChoices: UserChoices) => {
   const devDeps = baseDeps;
