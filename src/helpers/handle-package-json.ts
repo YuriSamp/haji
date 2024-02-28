@@ -19,6 +19,19 @@ export const overridePackageJson = async  (path : PlatformPath, fullPath : strin
     "test:coverage": "vitest run --coverage",
   };
 
+  packageJson.tsup = {
+    "clean": true,
+    "entry": [
+      "src/index.ts"
+    ],
+    "format": [
+      "esm"
+    ],
+    "minify": false,
+    "target": "esnext",
+    "outDir": "dist"
+  },
+
   await writeFile(
     path.join(fullPath, "package.json"),
     JSON.stringify(packageJson, null, 2)
